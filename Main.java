@@ -9,6 +9,8 @@ import java.util.List;
 
 import models.Pair;
 import models.Plugboard;
+import models.Rotor;
+
 import static consts.Constants.ALPHABET;
 
 public class Main {
@@ -78,21 +80,66 @@ public class Main {
         return output;
     }
 
-    public static List<Character> encrypt(List<Character> toEncrypt, Plugboard pb) {
+    public static List<Rotor> orderRotors(Rotor one, Rotor two, Rotor three, List<Integer> rotors) {
+        List<Rotor> oRotors = new ArrayList<Rotor>();
+        for(int i : rotors) {
+            if(i == 1) { 
+                oRotors.add(one);
+            }
+            else if(i == 2) {
+                oRotors.add(two);
+            }
+            else if(i == 3) {
+                oRotors.add(three);
+            }
+            else {
+                System.out.println("Your day key contains an invalid rotor number. Check the readme and try again.");
+                System.exit(1);
+            }
+        }
+
+        return oRotors;
+    }
+
+    public static List<Character> encrypt(List<Character> toEncrypt, Plugboard pb, List<Rotor> rotors) {
         List<Character> encrypted = new ArrayList<Character>();
 
         for(Character c : toEncrypt) {
             if(c == '+') {
-                encrypted.add(c);
+                encrypted.add(' ');
             }
             else {
                 int alphaIndex = ALPHABET.indexOf(c);
                 int afterPb = pb.translate(alphaIndex);
-                encrypted.add(ALPHABET.get(afterPb));
+                int afterRotors = rotorEncrypt(afterPb, rotors);
+                encrypted.add(ALPHABET.get(afterRotors));
             }
         }
 
         return encrypted;
+    }
+
+    public static int rotorEncrypt(int current, List<Rotor> rotors) {
+        // Rotate the outermost rotor.
+        rotors.get(0).rotate();
+        // Check if any of the other rotors are also rotated.
+        if(rotors.get(0).getRotor() == 1 && rotors.get(0).getTop() == 'R'
+            || rotors.get(0).getRotor() == 2 && rotors.get(0).getTop() == 'F'
+            || rotors.get(0).getRotor() == 3 && rotors.get(0).getTop() == 'W') {
+            rotors.get(1).rotate();
+        } 
+
+        if(rotors.get(1).getRotor() == 1 && rotors.get(1).getTop() == 'R'
+        || rotors.get(1).getRotor() == 2 && rotors.get(1).getTop() == 'F'
+        || rotors.get(1).getRotor() == 3 && rotors.get(1).getTop() == 'W') {
+            rotors.get(2).rotate();
+        }
+        // Current is still just an alpha index.
+        for(int i = 0; i < rotors.size(); i++) {
+            current = rotors.get(i).translate(current);
+        }
+
+        return current;
     }
 
     public static void main(String[] args) throws IOException {
@@ -127,9 +174,22 @@ public class Main {
         String inputFileName = args[1];
         List<Character> toEncrypt = parseInput(inputFileName);
 
-
+        // Set-up the plugboard.
         Plugboard pb = new Plugboard(plugBoard);
-        List<Character> encrypted = encrypt(toEncrypt, pb);
+
+        // Set-up the rotors.
+        int oneOffset = ALPHABET.indexOf(keySettings.get(0).charAt(0));
+        int twoOffset = ALPHABET.indexOf(keySettings.get(1).charAt(0));
+        int threeOffset = ALPHABET.indexOf(keySettings.get(2).charAt(0));
+
+        Rotor one = new Rotor(1, oneOffset);
+        Rotor two = new Rotor(2, twoOffset);
+        Rotor three = new Rotor(3, threeOffset);
+
+        // Place the rotors in their given order.
+        List<Rotor> oRotors = orderRotors(one, two, three, rotors);
+        
+        List<Character> encrypted = encrypt(toEncrypt, pb, oRotors);
 
         for(Character c : encrypted) {
             System.out.print(c);
