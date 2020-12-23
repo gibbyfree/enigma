@@ -64,6 +64,7 @@ public class Main {
         }
 
         String contents = sb.toString().toUpperCase();
+        System.out.println("Enigma I encrypting: " + contents);
         // This will allow us to replace our spaces at the end of encryption. 
         contents = contents.replace(" ", "+");
 

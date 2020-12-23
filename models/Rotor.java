@@ -31,12 +31,17 @@ public class Rotor {
     }
 
     public int translate(int i) {
-        int newIndex = i + offset;
+        int newIndex = i + this.offset;
         while(newIndex > 25) {
             newIndex -= 25;
         }
         char before = ALPHABET.get(i);
-        char after = this.wireSpec.get(newIndex - 1);
+        char after;
+        if(this.offset > 0) {
+            after = this.wireSpec.get(newIndex - 1);
+        } else {
+            after = this.wireSpec.get(i);
+        }
         System.out.println("The current passes through rotor " + this.rotor + ". " + before + " becomes " + after + ".");
         return ALPHABET.indexOf(after);
     }
