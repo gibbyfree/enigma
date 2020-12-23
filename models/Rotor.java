@@ -5,6 +5,7 @@ import java.util.List;
 import static consts.Constants.ROTOR_1;
 import static consts.Constants.ROTOR_2;
 import static consts.Constants.ROTOR_3;
+import static consts.Constants.UKW_B;
 import static consts.Constants.ALPHABET;
 
 public class Rotor {
@@ -19,6 +20,8 @@ public class Rotor {
             this.wireSpec = ROTOR_2;
         } else if (rotor == 3) {
             this.wireSpec = ROTOR_3;
+        } else if (rotor == 0) {
+            this.wireSpec = UKW_B;
         } else {
             System.out.println("Your day key contains an invalid rotor number. Check the readme and try again.");
             System.exit(1);

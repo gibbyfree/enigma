@@ -101,7 +101,7 @@ public class Main {
         return oRotors;
     }
 
-    public static List<Character> encrypt(List<Character> toEncrypt, Plugboard pb, List<Rotor> rotors) {
+    public static List<Character> encrypt(List<Character> toEncrypt, Plugboard pb, List<Rotor> rotors, Rotor reflector) {
         List<Character> encrypted = new ArrayList<Character>();
 
         for(Character c : toEncrypt) {
@@ -112,7 +112,9 @@ public class Main {
                 int alphaIndex = ALPHABET.indexOf(c);
                 int afterPb = pb.translate(alphaIndex);
                 int afterRotors = rotorEncrypt(afterPb, rotors);
-                encrypted.add(ALPHABET.get(afterRotors));
+                int afterReflector = reflector.translate(afterRotors);
+                encrypted.add(ALPHABET.get(afterReflector));
+
             }
         }
 
@@ -185,11 +187,13 @@ public class Main {
         Rotor one = new Rotor(1, oneOffset);
         Rotor two = new Rotor(2, twoOffset);
         Rotor three = new Rotor(3, threeOffset);
+        // The reflector is basically just another rotor with no offset or rotating.
+        Rotor reflector = new Rotor(0, 0);
 
         // Place the rotors in their given order.
         List<Rotor> oRotors = orderRotors(one, two, three, rotors);
         
-        List<Character> encrypted = encrypt(toEncrypt, pb, oRotors);
+        List<Character> encrypted = encrypt(toEncrypt, pb, oRotors, reflector);
 
         for(Character c : encrypted) {
             System.out.print(c);

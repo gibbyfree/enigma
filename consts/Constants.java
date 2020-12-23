@@ -18,4 +18,7 @@ public final class Constants {
 
     public static List<Character> ROTOR_3 = Arrays.asList('B', 'D', 'F', 'H', 'J', 'L', 'C', 'P', 'R', 'T', 'X', 'V',
             'Z', 'N', 'Y', 'E', 'I', 'W', 'G', 'A', 'K', 'M', 'U', 'S', 'Q', 'O');
+
+    public static List<Character> UKW_B = Arrays.asList('Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O',
+            'K', 'M', 'I', 'E', 'B', 'F', 'Z','C', 'W', 'V', 'J', 'A', 'T');
 }
