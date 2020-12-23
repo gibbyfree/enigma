@@ -113,12 +113,23 @@ public class Main {
                 int afterPb = pb.translate(alphaIndex);
                 int afterRotors = rotorEncrypt(afterPb, rotors);
                 int afterReflector = reflector.translate(afterRotors);
-                encrypted.add(ALPHABET.get(afterReflector));
-
+                int afterReverseRotors = reverseRotorEncrypt(afterReflector, rotors);
+                int afterReversePb = pb.reverseTranslate(afterReverseRotors);
+                System.out.println("The lamplight is illuminated. Encrypted output: " + ALPHABET.get(afterReversePb));
+                encrypted.add(ALPHABET.get(afterReversePb));
             }
         }
 
         return encrypted;
+    }
+
+    public static int reverseRotorEncrypt(int current, List<Rotor> rotors) {
+        // There is no rotation in left-to-right rotor encryption.
+        for(int i = rotors.size() - 1; i >= 0; i--) {
+            current = rotors.get(i).translate(current);
+        }
+
+        return current;
     }
 
     public static int rotorEncrypt(int current, List<Rotor> rotors) {
