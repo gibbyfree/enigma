@@ -2,14 +2,14 @@
 
 Ensure that Java has been installed on your machine. From the main directory, run the following commands in a terminal:
 
-```javac Main.java
-java Main *[day_key_file_location]* *input_file_location]*```
+`javac Main.java
+java Main [day_key_file_location] input_file_location]`
 
 # Day key file format
 
 In order to use the Enigma simulator, a *day key* must be provided. When Enigma machines were used during World War II, operators received a key each day that outlined how the machine should be configured for that day. A sample day key can be found in the main directory. 
 
-| Line      | Description |
+| Line | Description |
 | ----------- | ----------- |
 | (A,I) (J,F) (E,M) (Z,X) (W,O) (S,B)| **Plugboard configuration**: Which characters should be swapped at the plugboard? Pairs in parentheses, separated by spaces.|
 | 2 3 1 | **Rotor order**: In what order should the rotors be placed into the machine? The first position in the list (2) represents the firstmost rotor, on the far right of the machine. Separated by spaces.|
